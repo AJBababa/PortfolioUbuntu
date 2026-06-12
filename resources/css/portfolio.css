@@ -1,0 +1,628 @@
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    min-height: 100%;
+    font-family: "Ubuntu", "Segoe UI", sans-serif;
+}
+
+body {
+    min-height: 100vh;
+}
+
+.ubuntu-desktop {
+    position: relative;
+    min-height: 100vh;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow: hidden;
+}
+
+.desktop-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 15, 15, 0.28);
+}
+
+.desktop-content {
+    position: relative;
+    z-index: 2;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+}
+
+.terminal-window {
+    width: min(920px, 90vw);
+    min-height: 540px;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 18px 60px rgba(0, 0, 0, 0.45);
+    background: #2b2b2b;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.terminal-titlebar {
+    height: 42px;
+    background: linear-gradient(to bottom, #3b3b3b, #2d2d2d);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 14px;
+    color: #f2f2f2;
+    font-size: 14px;
+    cursor: grab;
+    user-select: none;
+    touch-action: none;
+}
+
+.terminal-title-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.terminal-app-icon {
+    width: 22px;
+    height: 22px;
+    border-radius: 5px;
+    background: #4a4a4a;
+    color: #f7f7f7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.terminal-title {
+    font-weight: 500;
+    letter-spacing: 0.2px;
+}
+
+.terminal-title-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.title-btn {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #e8e8e8;
+    font-size: 13px;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.terminal-body {
+    min-height: 498px;
+    background: #300a24;
+    color: #f5f5f5;
+    padding: 24px 28px;
+    font-family: "Ubuntu Mono", "Consolas", monospace;
+    font-size: 21px;
+    line-height: 1.45;
+}
+
+.terminal-text {
+    margin: 0 0 8px;
+}
+
+.muted {
+    color: #d0c7cd;
+}
+
+.success {
+    color: #8ae234;
+    font-weight: 700;
+}
+
+.terminal-spacer {
+    height: 28px;
+}
+
+.terminal-line {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0;
+}
+
+.prompt-user {
+    color: #8ae234;
+}
+
+.prompt-separator,
+.prompt-symbol {
+    color: #f5f5f5;
+}
+
+.prompt-path {
+    color: #729fcf;
+}
+
+.cursor {
+    display: inline-block;
+    width: 12px;
+    height: 24px;
+    margin-left: 8px;
+    background: #f5f5f5;
+    animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .desktop-content {
+        padding: 16px;
+    }
+
+    .terminal-window {
+        width: 100%;
+        min-height: 460px;
+    }
+
+    .terminal-body {
+        font-size: 16px;
+        padding: 18px;
+    }
+}
+
+.ubuntu-topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 28px;
+    background: #111111;
+    color: #eeeeee;
+    z-index: 20;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 0 12px;
+    font-size: 13px;
+    user-select: none;
+}
+
+.topbar-left,
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.topbar-right {
+    justify-content: flex-end;
+}
+
+.topbar-center {
+    font-weight: 500;
+}
+
+.activities-pill {
+    width: 22px;
+    height: 6px;
+    border-radius: 999px;
+    background: #eeeeee;
+    display: inline-block;
+}
+
+.ubuntu-dock {
+    position: fixed;
+    top: 28px;
+    left: 0;
+    bottom: 0;
+    width: 54px;
+    background: rgba(12, 12, 12, 0.92);
+    z-index: 19;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 0;
+    gap: 10px;
+}
+
+.dock-icon {
+    position: relative;
+    width: 38px;
+    height: 38px;
+    border: none;
+    border-radius: 10px;
+    background: transparent;
+    color: white;
+    font-size: 21px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition:
+        background 0.15s ease,
+        transform 0.15s ease;
+}
+
+.dock-icon:hover {
+    background: rgba(255, 255, 255, 0.16);
+    transform: scale(1.05);
+}
+
+.dock-icon.active {
+    background: rgba(255, 255, 255, 0.18);
+}
+
+.dock-icon.active::before {
+    content: "";
+    position: absolute;
+    left: -7px;
+    width: 4px;
+    height: 24px;
+    border-radius: 999px;
+    background: #f2f2f2;
+}
+
+.dock-spacer {
+    flex: 1;
+}
+
+.desktop-content {
+    padding-left: 54px;
+    padding-top: 28px;
+}
+
+.window-btn {
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+    color: #eeeeee;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.window-btn:hover {
+    background: rgba(255, 255, 255, 0.14);
+}
+
+.window-btn.close:hover {
+    background: #c64628;
+}
+
+.terminal-window {
+    transition:
+        transform 0.18s ease,
+        opacity 0.18s ease,
+        width 0.18s ease,
+        height 0.18s ease,
+        top 0.18s ease,
+        left 0.18s ease,
+        right 0.18s ease,
+        bottom 0.18s ease,
+        border-radius 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+.terminal-window.is-floating {
+    position: fixed;
+    margin: 0;
+    z-index: 24;
+}
+
+.terminal-window.is-dragging {
+    transition: none;
+}
+
+.terminal-window.is-dragging .terminal-titlebar {
+    cursor: grabbing;
+}
+
+.terminal-window.is-hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.96);
+}
+
+.terminal-window.is-maximized {
+    position: fixed;
+    top: 28px;
+    left: 54px;
+    right: 0;
+    bottom: 0;
+    width: auto;
+    height: auto;
+    min-height: unset;
+    border-radius: 0;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
+    z-index: 25;
+}
+
+.terminal-window.is-maximized .terminal-body {
+    min-height: calc(100vh - 70px);
+    height: calc(100vh - 70px);
+    padding-top: 18px;
+}
+
+/* Terminal Ubuntu 1:1 override */
+
+.terminal-window {
+    width: min(940px, calc(100vw - 100px));
+    min-height: unset;
+    height: 480px;
+    border-radius: 6px 6px 0 0;
+    overflow: hidden;
+    background: #300a24;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.48);
+    border: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.terminal-titlebar {
+    position: relative;
+    height: 28px;
+    padding: 0;
+    background: linear-gradient(to bottom, #4c4b47, #393834);
+    color: #eeeeee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Ubuntu", "Segoe UI", sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: grab;
+    user-select: none;
+    touch-action: none;
+}
+
+.terminal-title-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    line-height: 28px;
+}
+
+.terminal-title-actions {
+    position: absolute;
+    right: 7px;
+    top: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.window-btn {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.45);
+    background: linear-gradient(to bottom, #8f8e89, #686762);
+    color: #2f2f2f;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+}
+
+.window-btn:hover {
+    filter: brightness(1.12);
+}
+
+.window-btn.close {
+    background: linear-gradient(to bottom, #f0784f, #d94b28);
+    color: #2b120b;
+}
+
+.window-btn.close:hover {
+    background: linear-gradient(to bottom, #ff875e, #e95420);
+    color: #ffffff;
+}
+
+.terminal-menubar {
+    height: 25px;
+    background: #3c3b37;
+    color: #f2f2f2;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 0 7px;
+    font-family: "Ubuntu", "Segoe UI", sans-serif;
+    font-size: 14px;
+    user-select: none;
+}
+
+.terminal-menubar span {
+    cursor: default;
+}
+
+.terminal-menubar span:hover {
+    color: #ffffff;
+}
+
+.terminal-body {
+    position: relative;
+    height: calc(100% - 53px);
+    min-height: unset;
+    background: #300a24;
+    color: #ffffff;
+    padding: 4px 6px;
+    font-family: "Ubuntu Mono", "Consolas", "Courier New", monospace;
+    font-size: 16px;
+    line-height: 1.35;
+    overflow: hidden;
+}
+
+.terminal-body::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 5px;
+    height: 18px;
+    background: #e07b39;
+}
+
+.terminal-output {
+    width: 100%;
+}
+
+.terminal-line {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    flex-wrap: nowrap;
+}
+
+.prompt-user {
+    color: #8ae234;
+    font-weight: 700;
+}
+
+.prompt-separator,
+.prompt-symbol {
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.prompt-path {
+    color: #729fcf;
+    font-weight: 700;
+}
+
+.cursor {
+    display: inline-block;
+    width: 8px;
+    height: 19px;
+    margin-left: 7px;
+    background: #ffffff;
+    animation: blink 1s step-end infinite;
+}
+
+/* Maximizado adaptado al nuevo diseño */
+.terminal-window.is-maximized {
+    position: fixed;
+    top: 28px;
+    left: 54px;
+    right: 0;
+    bottom: 0;
+    width: auto;
+    height: auto;
+    min-height: unset;
+    border-radius: 0;
+    z-index: 25;
+}
+
+.terminal-window.is-maximized .terminal-body {
+    height: calc(100vh - 81px);
+    min-height: unset;
+}
+
+.terminal-window.is-maximized .terminal-titlebar {
+    height: 28px;
+    padding: 0;
+}
+
+.terminal-window.is-maximized .terminal-title-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    line-height: 28px;
+}
+
+.terminal-window.is-maximized .terminal-title-actions {
+    position: absolute;
+    top: 5px;
+    right: 7px;
+    z-index: 1;
+}
+
+@media (max-width: 768px) {
+    .terminal-window.is-maximized {
+        left: 54px;
+        top: 28px;
+    }
+
+    .terminal-window.is-maximized .terminal-body {
+        height: calc(100vh - 64px);
+        min-height: calc(100vh - 64px);
+        padding: 16px;
+    }
+
+    .terminal-window.is-maximized .terminal-title-center {
+        position: static;
+        transform: none;
+    }
+}
+
+.terminal-body {
+    overflow-y: auto;
+}
+
+.terminal-body::-webkit-scrollbar {
+    width: 8px;
+}
+
+.terminal-body::-webkit-scrollbar-track {
+    background: #300a24;
+}
+
+.terminal-body::-webkit-scrollbar-thumb {
+    background: #8b5c7e;
+}
+
+.terminal-message {
+    min-height: 21px;
+    white-space: pre-wrap;
+}
+
+.terminal-input-line {
+    display: flex;
+    align-items: center;
+}
+
+.terminal-input {
+    flex: 1;
+    min-width: 120px;
+    margin-left: 7px;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: #ffffff;
+    font: inherit;
+    line-height: inherit;
+    caret-color: #ffffff;
+    padding: 0;
+}
+
+.terminal-command {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.terminal-response {
+    white-space: pre-wrap;
+    margin-bottom: 2px;
+}
+
+.terminal-error {
+    color: #ff6b6b;
+}
