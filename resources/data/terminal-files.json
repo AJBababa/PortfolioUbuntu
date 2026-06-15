@@ -76,15 +76,17 @@
         "    Angular · Ionic · TypeScript · Node.js · Express · Gemini",
         "    RPG interactivo con creación de personajes, generación de avatares IA,",
         "    sesiones narrativas generadas con IA y decisiones ramificadas.",
+        "    Repo: github.com/AJBababa/dungeo-ai-adventure",
         "",
         "[2] Internal Management App",
         "    Laravel · Blade · MySQL · JavaScript",
         "    Aplicación interna de gestión desarrollada en entorno profesional.",
         "",
-        "[3] Portfolio",
-        "    Laravel · Blade · Vite · Vanilla JS",
-        "    Portfolio interactivo inspirado en Ubuntu con terminal funcional.",
-        ""
+        "[3] Microservices Social App",
+        "    Node.js · Docker · Microservices · APIs REST",
+        "    Aplicación social dividida en servicios independientes.",
+        "    Proyecto enfocado en arquitectura de microservicios, contenedores y comunicación entre servicios.",
+        "    Repo: github.com/AJBababa/microservices-social-app"
     ],
     "contact.sh": [
         "#!/bin/bash",
@@ -95,7 +97,7 @@
         "echo \"LinkedIn: not available yet\""
     ],
     "hireme.txt": [
-        ""
+        "(￣_￣|||)"
     ]
 
 }

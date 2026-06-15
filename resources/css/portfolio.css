@@ -623,6 +623,16 @@ body {
     margin-bottom: 2px;
 }
 
+.terminal-link {
+    color: #729fcf;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.terminal-link:hover {
+    color: #9ec9ff;
+}
+
 .terminal-error {
     color: #ff6b6b;
 }

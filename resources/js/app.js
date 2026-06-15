@@ -165,7 +165,7 @@ const terminalOutput = document.querySelector('#terminalOutput');
 const terminalInput = document.querySelector('#terminalInput');
 
 const promptHtml = `
-    <span class="prompt-user">alvaro@abababuntu-desktop</span>
+    <span class="prompt-user">alvaro@NOMBREE-desktop</span>
     <span class="prompt-separator">:</span>
     <span class="prompt-path">~</span>
     <span class="prompt-symbol">$</span>
@@ -179,6 +179,7 @@ const commands = {
         '  clear             Clear terminal',
         '  ls                List files',
         '  cat <file>        Show file content',
+        '  sudo cat <file>   Show file content, dramatically',
         '',
     ],
 };
@@ -231,7 +232,7 @@ const appendResponse = (lines, className = '') => {
     responseLines.forEach((lineText) => {
         const line = document.createElement('div');
         line.className = `terminal-response ${className}`.trim();
-        line.textContent = lineText;
+        line.innerHTML = linkifyTerminalLine(lineText);
         terminalOutput.appendChild(line);
     });
 };
@@ -243,6 +244,17 @@ const escapeHtml = (value) => {
         .replaceAll('>', '&gt;')
         .replaceAll('"', '&quot;')
         .replaceAll("'", '&#039;');
+};
+
+const linkifyTerminalLine = (value) => {
+    const escapedValue = escapeHtml(value);
+    const githubRepoPattern = /github\.com\/[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+/g;
+
+    return escapedValue.replace(githubRepoPattern, (repoUrl) => {
+        const href = `https://${repoUrl}`;
+
+        return `<a class="terminal-link" href="${href}" target="_blank" rel="noopener noreferrer">${repoUrl}</a>`;
+    });
 };
 
 const runCommand = (rawCommand) => {
@@ -266,8 +278,10 @@ const runCommand = (rawCommand) => {
         return;
     }
 
-    if (normalizedCommand.startsWith('cat ')) {
-        const requestedFile = command.slice(4).trim();
+    const catPrefix = ['cat ', 'sudo cat '].find((prefix) => normalizedCommand.startsWith(prefix));
+
+    if (catPrefix) {
+        const requestedFile = command.slice(catPrefix.length).trim();
 
         if (!requestedFile) {
             appendResponse('cat: missing file operand', 'terminal-error');
@@ -278,6 +292,11 @@ const runCommand = (rawCommand) => {
 
         if (!fileName) {
             appendResponse(`cat: ${requestedFile}: No such file or directory`, 'terminal-error');
+            return;
+        }
+
+        if (catPrefix === 'cat ' && fileName === 'hireme.txt') {
+            appendResponse(`cat: ${requestedFile}: Permission denied`);
             return;
         }
 
@@ -307,7 +326,15 @@ terminalInput?.addEventListener('keydown', (event) => {
     scrollTerminalToBottom();
 });
 
-terminalBody?.addEventListener('click', () => {
+terminalBody?.addEventListener('click', (event) => {
+    if (event.target instanceof Element && event.target.closest('a')) {
+        return;
+    }
+
+    if (window.getSelection()?.toString()) {
+        return;
+    }
+
     terminalInput?.focus();
 });
 
