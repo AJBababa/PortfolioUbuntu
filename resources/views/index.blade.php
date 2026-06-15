@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NOMBREE</title>
+    <title>AlvarOS</title>
     @vite(['resources/css/app.css', 'resources/css/portfolio.css', 'resources/js/app.js'])
 </head>
 
@@ -20,7 +20,7 @@
             </div>
 
             <div class="topbar-center">
-                <span>NOMBREE</span>
+                <span>AlvarOS</span>
             </div>
 
             <div class="topbar-right">
@@ -63,7 +63,7 @@
             <section class="terminal-window" id="terminalWindow">
                 <div class="terminal-titlebar">
                     <div class="terminal-title-center">
-                        alvaro@NOMBREE-desktop: ~
+                        alvaro@AlvarOS-desktop: ~
                     </div>
 
                     <div class="terminal-title-actions">
@@ -84,12 +84,12 @@
 
                 <div class="terminal-body" id="terminalBody">
                     <div class="terminal-output" id="terminalOutput">
-                        <div class="terminal-message">Welcome to NOMBREE.</div>
+                        <div class="terminal-message">Welcome to AlvarOS.</div>
                         <div class="terminal-message muted">Type "help" to see available commands.</div>
                     </div>
 
                     <div class="terminal-line terminal-input-line">
-                        <span class="prompt-user">alvaro@NOMBREE-desktop</span>
+                        <span class="prompt-user">alvaro@AlvarOS-desktop</span>
                         <span class="prompt-separator">:</span>
                         <span class="prompt-path">~</span>
                         <span class="prompt-symbol">$</span>

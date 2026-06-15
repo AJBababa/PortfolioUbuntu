@@ -165,7 +165,7 @@ const terminalOutput = document.querySelector('#terminalOutput');
 const terminalInput = document.querySelector('#terminalInput');
 
 const promptHtml = `
-    <span class="prompt-user">alvaro@NOMBREE-desktop</span>
+    <span class="prompt-user">alvaro@AlvarOS-desktop</span>
     <span class="prompt-separator">:</span>
     <span class="prompt-path">~</span>
     <span class="prompt-symbol">$</span>
