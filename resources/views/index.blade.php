@@ -21,6 +21,7 @@
 
             <div class="topbar-center">
                 <span>AlvarOS</span>
+                <span class="demo-badge">demo</span>
             </div>
 
             <div class="topbar-right">
@@ -32,28 +33,28 @@
 
         {{-- Dock lateral --}}
         <aside class="ubuntu-dock">
-            <button class="dock-icon active" data-app="terminal" title="Terminal">
+            <button class="dock-icon active status-on" data-app="terminal" title="Terminal">
                 <img src="{{ asset('images/terminal.png') }}" alt="Terminal">
             </button>
 
-            <button class="dock-icon" data-app="projects" title="Proyectos">
+            <button class="dock-icon status-off" data-app="projects" title="Proyectos">
                 <img src="{{ asset('images/projects.png') }}" alt="Proyectos">
             </button>
 
-            <button class="dock-icon" data-app="skills" title="Skills">
+            <button class="dock-icon status-off" data-app="skills" title="Skills">
                 <img src="{{ asset('images/skills.png') }}" alt="Skills">
             </button>
 
-            <button class="dock-icon" data-app="cv" title="CV">
+            <button class="dock-icon status-on" data-app="cv" title="CV">
                 <img src="{{ asset('images/cv.png') }}" alt="CV">
             </button>
-            <button class="dock-icon" data-app="contact" title="Contacto">
+            <button class="dock-icon status-off" data-app="contact" title="Contacto">
                 <img src="{{ asset('images/contact.png') }}" alt="Contacto">
             </button>
 
             <div class="dock-spacer"></div>
 
-            <button class="dock-icon" data-app="trash" title="Trash">
+            <button class="dock-icon status-off" data-app="trash" title="Trash">
                 <img src="{{ asset('images/trash.png') }}" alt="Trash">
             </button>
         </aside>
@@ -99,6 +100,41 @@
                     </div>
                 </div>
             </section>
+
+            {{-- CV apartado --}}
+
+            <section class="cv-window is-hidden" id="cvWindow">
+                <div class="terminal-titlebar cv-titlebar">
+                    <div class="terminal-title-center">
+                        cv-alvaro-jimenez.pdf
+                    </div>
+
+                    <div class="terminal-title-actions">
+                        <button class="window-btn" id="minimizeCv" type="button">−</button>
+                        <button class="window-btn" id="maximizeCv" type="button">□</button>
+                        <button class="window-btn close" id="closeCv" type="button">×</button>
+                    </div>
+                </div>
+
+                <div class="cv-toolbar">
+                    <span>Document Viewer</span>
+
+                    <div class="cv-toolbar-actions">
+                        <a href="{{ asset('files/cv-alvaro-jimenez.pdf') }}" target="_blank" rel="noopener noreferrer">
+                            Open
+                        </a>
+
+                        <a href="{{ asset('files/cv-alvaro-jimenez.pdf') }}" download>
+                            Download
+                        </a>
+                    </div>
+                </div>
+
+                <div class="cv-frame" id="cvViewerContainer" data-pdf-url="{{ asset('files/cv-alvaro-jimenez.pdf') }}">
+                    <div id="cvViewer" class="pdfViewer"></div>
+                </div>
+            </section>
+
         </main>
     </div>
 </body>

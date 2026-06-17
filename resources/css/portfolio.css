@@ -212,6 +212,45 @@ body {
 
 .topbar-center {
     font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.demo-badge {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: #ffd9a0;
+    background: rgba(224, 123, 57, 0.18);
+    border: 1px solid rgba(224, 123, 57, 0.45);
+    border-radius: 999px;
+    padding: 1px 7px;
+    line-height: 1.5;
+}
+
+/* Status dot on dock apps: green = working, red = not yet available. */
+.dock-icon.status-on::after,
+.dock-icon.status-off::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(12, 12, 12, 0.92);
+}
+
+.dock-icon.status-on::after {
+    background: #2ecc71;
+    box-shadow: 0 0 5px rgba(46, 204, 113, 0.85);
+}
+
+.dock-icon.status-off::after {
+    background: #e74c3c;
+    box-shadow: 0 0 5px rgba(231, 76, 60, 0.7);
 }
 
 .activities-pill {
@@ -635,4 +674,156 @@ body {
 
 .terminal-error {
     color: #ff6b6b;
+}
+
+
+
+
+
+/* ---- CV css ---- */
+
+
+.cv-window {
+    position: fixed;
+    top: 72px;
+    left: 110px;
+    width: min(880px, calc(100vw - 130px));
+    height: min(720px, calc(100vh - 100px));
+    border-radius: 6px 6px 0 0;
+    overflow: hidden;
+    background: #2b2b2b;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.48);
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    z-index: 24;
+    transition:
+        transform 0.18s ease,
+        opacity 0.18s ease,
+        width 0.18s ease,
+        height 0.18s ease,
+        top 0.18s ease,
+        left 0.18s ease,
+        right 0.18s ease,
+        bottom 0.18s ease,
+        border-radius 0.18s ease;
+}
+
+.cv-window.is-hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.96);
+}
+
+.cv-window.is-floating {
+    margin: 0;
+}
+
+.cv-window.is-dragging {
+    transition: none;
+}
+
+.cv-window.is-dragging .terminal-titlebar {
+    cursor: grabbing;
+}
+
+/* Inactive (unfocused) windows are dimmed so the active one stands out. */
+.terminal-window:not(.is-active) .terminal-titlebar,
+.cv-window:not(.is-active) .terminal-titlebar {
+    background: linear-gradient(to bottom, #3a3a37, #2d2c29);
+    color: #aaaaaa;
+}
+
+.terminal-window:not(.is-active),
+.cv-window:not(.is-active) {
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
+}
+
+.terminal-window:not(.is-active) .terminal-titlebar .window-btn,
+.cv-window:not(.is-active) .terminal-titlebar .window-btn {
+    filter: saturate(0.5) brightness(0.92);
+}
+
+.cv-window.is-maximized {
+    top: 28px;
+    left: 54px;
+    right: 0;
+    bottom: 0;
+    width: auto;
+    height: auto;
+    border-radius: 0;
+    z-index: 26;
+}
+
+.cv-toolbar {
+    height: 36px;
+    background: #3c3b37;
+    color: #f2f2f2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 0 12px;
+    font-family: "Ubuntu", "Segoe UI", sans-serif;
+    font-size: 14px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.45);
+}
+
+.cv-toolbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.cv-toolbar-actions a {
+    color: #f2f2f2;
+    text-decoration: none;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.1);
+    transition:
+        background 0.15s ease,
+        transform 0.15s ease;
+}
+
+.cv-toolbar-actions a:hover {
+    background: rgba(255, 255, 255, 0.18);
+    transform: translateY(-1px);
+}
+
+.cv-frame {
+    position: absolute;
+    top: 64px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: auto;
+    background: #525659;
+}
+
+.cv-frame .pdfViewer .page {
+    margin: 12px auto;
+    border: none;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+}
+
+@media (max-width: 768px) {
+    .cv-window {
+        top: 48px;
+        left: 64px;
+        width: calc(100vw - 74px);
+        height: calc(100vh - 58px);
+    }
+
+    .cv-window.is-maximized {
+        top: 28px;
+        left: 54px;
+    }
+
+    .cv-toolbar {
+        font-size: 12px;
+        padding: 0 8px;
+    }
+
+    .cv-toolbar-actions a {
+        padding: 3px 7px;
+    }
 }

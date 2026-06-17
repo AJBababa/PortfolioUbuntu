@@ -1,161 +1,195 @@
 import terminalFiles from '../data/terminal-files.json';
+import { initCvViewer } from './cv-viewer.js';
 
-const terminalWindow = document.querySelector('#terminalWindow');
-const closeTerminal = document.querySelector('#closeTerminal');
-const minimizeTerminal = document.querySelector('#minimizeTerminal');
-const maximizeTerminal = document.querySelector('#maximizeTerminal');
-const terminalDockIcon = document.querySelector('[data-app="terminal"]');
-const terminalTitlebar = document.querySelector('.terminal-titlebar');
 const maximizeIcon = '□';
 const restoreIcon = '❐';
 const desktopOffsetTop = 28;
 const desktopOffsetLeft = 54;
 const windowMargin = 12;
-const dragState = {
-    active: false,
-    offsetX: 0,
-    offsetY: 0,
-};
-const floatingState = {
-    left: null,
-    top: null,
-};
-
-const hideTerminal = ({ keepActive = true } = {}) => {
-    terminalWindow?.classList.add('is-hidden');
-    terminalDockIcon?.classList.toggle('active', keepActive);
-};
-
-const showTerminal = () => {
-    terminalWindow?.classList.remove('is-hidden');
-    terminalDockIcon?.classList.add('active');
-};
 
 const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
-const setFloatingPosition = (left, top) => {
-    if (!terminalWindow) {
+// Window focus manager: brings the clicked window to front and marks it active.
+const windowControllers = [];
+let topZIndex = 30;
+
+const focusWindow = (controller) => {
+    if (!controller) {
         return;
     }
 
-    const maxLeft = window.innerWidth - terminalWindow.offsetWidth - windowMargin;
-    const maxTop = window.innerHeight - terminalTitlebar.offsetHeight - windowMargin;
-    const nextLeft = clamp(left, desktopOffsetLeft, maxLeft);
-    const nextTop = clamp(top, desktopOffsetTop, maxTop);
+    topZIndex += 1;
+    controller.windowEl.style.zIndex = `${topZIndex}`;
 
-    terminalWindow.classList.add('is-floating');
-    terminalWindow.style.left = `${nextLeft}px`;
-    terminalWindow.style.top = `${nextTop}px`;
-    terminalWindow.style.right = 'auto';
-    terminalWindow.style.bottom = 'auto';
-
-    floatingState.left = nextLeft;
-    floatingState.top = nextTop;
+    windowControllers.forEach((other) => {
+        other.windowEl.classList.toggle('is-active', other === controller);
+    });
 };
 
-const clearFloatingPosition = () => {
-    if (!terminalWindow) {
-        return;
+// Reusable window controller: show/hide, maximize and drag for any window.
+const createWindowController = ({ windowEl, titlebarEl, dockIcon, closeBtn, minimizeBtn, maximizeBtn, onShow }) => {
+    if (!windowEl) {
+        return null;
     }
 
-    terminalWindow.classList.remove('is-floating');
-    terminalWindow.style.left = '';
-    terminalWindow.style.top = '';
-    terminalWindow.style.right = '';
-    terminalWindow.style.bottom = '';
-};
+    const controller = { windowEl };
+    windowControllers.push(controller);
 
-const toggleMaximized = () => {
-    if (!terminalWindow || !maximizeTerminal) {
-        return;
-    }
+    const floatingState = { left: null, top: null };
+    const dragState = { active: false, offsetX: 0, offsetY: 0 };
 
-    const willMaximize = !terminalWindow.classList.contains('is-maximized');
+    const hide = ({ keepActive = true } = {}) => {
+        windowEl.classList.add('is-hidden');
+        dockIcon?.classList.toggle('active', keepActive);
+    };
 
-    if (willMaximize) {
-        stopDragging();
-        clearFloatingPosition();
-        terminalWindow.classList.add('is-maximized');
-    } else {
-        terminalWindow.classList.remove('is-maximized');
+    const show = () => {
+        windowEl.classList.remove('is-hidden');
+        dockIcon?.classList.add('active');
+        focusWindow(controller);
+        onShow?.();
+    };
 
-        if (floatingState.left !== null && floatingState.top !== null) {
-            setFloatingPosition(floatingState.left, floatingState.top);
+    const setFloatingPosition = (left, top) => {
+        const maxLeft = window.innerWidth - windowEl.offsetWidth - windowMargin;
+        const maxTop = window.innerHeight - titlebarEl.offsetHeight - windowMargin;
+        const nextLeft = clamp(left, desktopOffsetLeft, maxLeft);
+        const nextTop = clamp(top, desktopOffsetTop, maxTop);
+
+        windowEl.classList.add('is-floating');
+        windowEl.style.left = `${nextLeft}px`;
+        windowEl.style.top = `${nextTop}px`;
+        windowEl.style.right = 'auto';
+        windowEl.style.bottom = 'auto';
+
+        floatingState.left = nextLeft;
+        floatingState.top = nextTop;
+    };
+
+    const clearFloatingPosition = () => {
+        windowEl.classList.remove('is-floating');
+        windowEl.style.left = '';
+        windowEl.style.top = '';
+        windowEl.style.right = '';
+        windowEl.style.bottom = '';
+    };
+
+    const stopDragging = (event) => {
+        if (!dragState.active) {
+            return;
         }
-    }
 
-    maximizeTerminal.textContent = willMaximize ? restoreIcon : maximizeIcon;
+        dragState.active = false;
+        windowEl.classList.remove('is-dragging');
+
+        if (event && titlebarEl?.hasPointerCapture(event.pointerId)) {
+            titlebarEl.releasePointerCapture(event.pointerId);
+        }
+    };
+
+    const toggleMaximized = () => {
+        if (!maximizeBtn) {
+            return;
+        }
+
+        const willMaximize = !windowEl.classList.contains('is-maximized');
+
+        if (willMaximize) {
+            stopDragging();
+            clearFloatingPosition();
+            windowEl.classList.add('is-maximized');
+        } else {
+            windowEl.classList.remove('is-maximized');
+
+            if (floatingState.left !== null && floatingState.top !== null) {
+                setFloatingPosition(floatingState.left, floatingState.top);
+            }
+        }
+
+        maximizeBtn.textContent = willMaximize ? restoreIcon : maximizeIcon;
+    };
+
+    closeBtn?.addEventListener('click', () => hide({ keepActive: false }));
+    minimizeBtn?.addEventListener('click', () => hide());
+    maximizeBtn?.addEventListener('click', () => toggleMaximized());
+
+    dockIcon?.addEventListener('click', () => {
+        if (windowEl.classList.contains('is-hidden')) {
+            show();
+            return;
+        }
+
+        hide();
+    });
+
+    // Clicking anywhere on the window brings it to front.
+    windowEl.addEventListener('pointerdown', () => focusWindow(controller));
+
+    titlebarEl?.addEventListener('pointerdown', (event) => {
+        if (event.button !== 0 || windowEl.classList.contains('is-maximized')) {
+            return;
+        }
+
+        if (event.target instanceof Element && event.target.closest('.window-btn')) {
+            return;
+        }
+
+        const rect = windowEl.getBoundingClientRect();
+
+        dragState.active = true;
+        dragState.offsetX = event.clientX - rect.left;
+        dragState.offsetY = event.clientY - rect.top;
+
+        setFloatingPosition(rect.left, rect.top);
+        windowEl.classList.add('is-dragging');
+        titlebarEl.setPointerCapture(event.pointerId);
+        event.preventDefault();
+    });
+
+    titlebarEl?.addEventListener('pointermove', (event) => {
+        if (!dragState.active) {
+            return;
+        }
+
+        setFloatingPosition(
+            event.clientX - dragState.offsetX,
+            event.clientY - dragState.offsetY,
+        );
+    });
+
+    titlebarEl?.addEventListener('pointerup', stopDragging);
+    titlebarEl?.addEventListener('pointercancel', stopDragging);
+
+    controller.show = show;
+    controller.hide = hide;
+    controller.toggleMaximized = toggleMaximized;
+
+    return controller;
 };
 
-closeTerminal?.addEventListener('click', () => {
-    hideTerminal({ keepActive: false });
+// Terminal window
+const terminalController = createWindowController({
+    windowEl: document.querySelector('#terminalWindow'),
+    titlebarEl: document.querySelector('#terminalWindow .terminal-titlebar'),
+    dockIcon: document.querySelector('[data-app="terminal"]'),
+    closeBtn: document.querySelector('#closeTerminal'),
+    minimizeBtn: document.querySelector('#minimizeTerminal'),
+    maximizeBtn: document.querySelector('#maximizeTerminal'),
 });
 
-minimizeTerminal?.addEventListener('click', () => {
-    hideTerminal();
+// CV window
+createWindowController({
+    windowEl: document.querySelector('#cvWindow'),
+    titlebarEl: document.querySelector('#cvWindow .terminal-titlebar'),
+    dockIcon: document.querySelector('[data-app="cv"]'),
+    closeBtn: document.querySelector('#closeCv'),
+    minimizeBtn: document.querySelector('#minimizeCv'),
+    maximizeBtn: document.querySelector('#maximizeCv'),
+    onShow: initCvViewer,
 });
 
-maximizeTerminal?.addEventListener('click', () => {
-    toggleMaximized();
-});
-
-terminalDockIcon?.addEventListener('click', () => {
-    if (terminalWindow?.classList.contains('is-hidden')) {
-        showTerminal();
-        return;
-    }
-
-    hideTerminal();
-});
-
-terminalTitlebar?.addEventListener('pointerdown', (event) => {
-    if (event.button !== 0 || !terminalWindow || terminalWindow.classList.contains('is-maximized')) {
-        return;
-    }
-
-    if (event.target instanceof Element && event.target.closest('.window-btn')) {
-        return;
-    }
-
-    const rect = terminalWindow.getBoundingClientRect();
-
-    dragState.active = true;
-    dragState.offsetX = event.clientX - rect.left;
-    dragState.offsetY = event.clientY - rect.top;
-
-    setFloatingPosition(rect.left, rect.top);
-    terminalWindow.classList.add('is-dragging');
-    terminalTitlebar.setPointerCapture(event.pointerId);
-    event.preventDefault();
-});
-
-terminalTitlebar?.addEventListener('pointermove', (event) => {
-    if (!dragState.active) {
-        return;
-    }
-
-    setFloatingPosition(
-        event.clientX - dragState.offsetX,
-        event.clientY - dragState.offsetY,
-    );
-});
-
-const stopDragging = (event) => {
-    if (!dragState.active || !terminalWindow) {
-        return;
-    }
-
-    dragState.active = false;
-    terminalWindow.classList.remove('is-dragging');
-
-    if (event && terminalTitlebar?.hasPointerCapture(event.pointerId)) {
-        terminalTitlebar.releasePointerCapture(event.pointerId);
-    }
-};
-
-terminalTitlebar?.addEventListener('pointerup', stopDragging);
-terminalTitlebar?.addEventListener('pointercancel', stopDragging);
-
+// The terminal is the active window on startup.
+focusWindow(terminalController);
 
 
 // Terminal command handling
