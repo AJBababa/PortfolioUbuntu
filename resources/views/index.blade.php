@@ -37,8 +37,8 @@
                 <img src="{{ asset('images/terminal.png') }}" alt="Terminal">
             </button>
 
-            <button class="dock-icon status-off" data-app="projects" title="Proyectos">
-                <img src="{{ asset('images/projects.png') }}" alt="Proyectos">
+            <button class="dock-icon status-on" data-app="desktop" title="Desktop">
+                <img src="{{ asset('images/projects.png') }}" alt="Explorador de archivos">
             </button>
 
             <button class="dock-icon status-off" data-app="skills" title="Skills">
@@ -133,6 +133,75 @@
                 <div class="cv-frame" id="cvViewerContainer" data-pdf-url="{{ asset('files/cv-alvaro-jimenez.pdf') }}">
                     <div id="cvViewer" class="pdfViewer"></div>
                 </div>
+            </section>
+
+            {{-- Explorador de archivos --}}
+            <section class="files-window is-hidden" id="filesWindow" aria-label="Explorador de archivos"
+                data-icon-base="{{ asset('images/icons') }}"
+                data-cover-base="{{ asset('images/projects') }}">
+                <div class="terminal-titlebar files-titlebar">
+                    <div class="terminal-title-center" id="filesWindowTitle">Desktop</div>
+
+                    <div class="terminal-title-actions">
+                        <button class="window-btn" id="minimizeFiles" type="button" aria-label="Minimizar">&minus;</button>
+                        <button class="window-btn" id="maximizeFiles" type="button" aria-label="Maximizar">&#9633;</button>
+                        <button class="window-btn close" id="closeFiles" type="button" aria-label="Cerrar">&times;</button>
+                    </div>
+                </div>
+
+                <div class="files-toolbar">
+                    <button class="files-nav-btn" id="filesBack" type="button" aria-label="Atrás" disabled>
+                        <span class="yaru-icon" style="--yaru-icon: url('{{ asset('images/icons/symbolic/go-previous-symbolic.svg') }}')"></span>
+                    </button>
+                    <button class="files-nav-btn" id="filesForward" type="button" aria-label="Adelante" disabled>
+                        <span class="yaru-icon" style="--yaru-icon: url('{{ asset('images/icons/symbolic/go-next-symbolic.svg') }}')"></span>
+                    </button>
+                    <button class="files-nav-btn" id="filesHome" type="button" aria-label="Ir a Desktop">
+                        <span class="yaru-icon" style="--yaru-icon: url('{{ asset('images/icons/symbolic/user-home-symbolic.svg') }}')"></span>
+                    </button>
+                    <div class="files-location" id="filesLocation">/home/alvaro/Desktop</div>
+                    <button class="files-view-btn" type="button" aria-label="Vista de iconos">
+                        <span class="yaru-icon" style="--yaru-icon: url('{{ asset('images/icons/symbolic/view-grid-symbolic.svg') }}')"></span>
+                    </button>
+                </div>
+
+                <div class="files-layout">
+                    <aside class="files-sidebar" aria-label="Ubicaciones">
+                        <div class="files-sidebar-heading">Places</div>
+                        <button class="files-place is-selected" type="button" data-files-path="desktop">
+                            <span class="yaru-icon" style="--yaru-icon: url('{{ asset('images/icons/symbolic/user-desktop-symbolic.svg') }}')"></span>
+                            Desktop
+                        </button>
+                        <button class="files-place" type="button" data-files-path="documents">
+                            <span class="yaru-icon" style="--yaru-icon: url('{{ asset('images/icons/symbolic/folder-documents-symbolic.svg') }}')"></span>
+                            Documents
+                        </button>
+                        <button class="files-place" type="button" data-files-path="projects">
+                            <span class="yaru-icon" style="--yaru-icon: url('{{ asset('images/icons/symbolic/folder-symbolic.svg') }}')"></span>
+                            Projects
+                        </button>
+
+                        <div class="files-sidebar-heading files-sidebar-section">Devices</div>
+                        <div class="files-device">
+                            <span class="yaru-icon" style="--yaru-icon: url('{{ asset('images/icons/symbolic/drive-harddisk-symbolic.svg') }}')"></span>
+                            AlvarOS
+                        </div>
+                    </aside>
+
+                    <div class="files-main">
+                        <div class="files-grid" id="filesGrid" aria-live="polite"></div>
+                        <article class="files-project is-hidden" id="filesProject" aria-live="polite"></article>
+
+                        <div class="file-preview is-hidden" id="filePreview">
+                            <button class="file-preview-close" id="closeFilePreview" type="button" aria-label="Cerrar vista previa">&times;</button>
+                            <div class="file-preview-icon" id="filePreviewIcon"></div>
+                            <strong id="filePreviewName"></strong>
+                            <pre id="filePreviewContent"></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <footer class="files-status" id="filesStatus">0 items</footer>
             </section>
 
         </main>

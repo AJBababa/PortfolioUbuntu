@@ -1,0 +1,74 @@
+{
+    "alvaros": {
+        "name": "AlvarOS",
+        "tagline": "Portfolio personal inspirado en Ubuntu",
+        "description": "Este mismo portfolio: un escritorio Ubuntu recreado en el navegador, con terminal interactiva, visor de PDF y explorador de archivos. Construido con Laravel, Blade y Vite, y desplegado en Docker.",
+        "cover": "AlvarOS.png",
+        "repo": "https://github.com/AJBababa/PortfolioUbuntu",
+        "demo": "https://alvarojb.es",
+        "stack": ["Laravel", "PHP", "Blade", "Vite", "Docker"],
+        "languages": {
+            "PHP": 53753,
+            "CSS": 15403,
+            "JavaScript": 13699,
+            "Blade": 5645,
+            "Dockerfile": 1047,
+            "Shell": 520
+        }
+    },
+    "dungeo-ai": {
+        "name": "Dungeo AI Adventure",
+        "tagline": "RPG narrativo generado con IA",
+        "description": "RPG interactivo con creación de personajes, generación de avatares por IA, sesiones narrativas generadas con Gemini y decisiones ramificadas que construyen el mundo de forma dinámica.",
+        "cover": "dungeo.png",
+        "repo": "https://github.com/AJBababa/dungeo-ai-adventure",
+        "demo": "https://dungeeoo.web.app",
+        "stack": ["Angular", "Ionic", "TypeScript", "Node.js", "Express", "Gemini"],
+        "languages": {
+            "TypeScript": 118976,
+            "SCSS": 38618,
+            "HTML": 20714,
+            "JavaScript": 1420
+        }
+    },
+    "social-app": {
+        "name": "Microservices Social App",
+        "tagline": "Arquitectura de microservicios en contenedores",
+        "description": "Aplicación social dividida en servicios independientes (API gateway, auth, users, posts, feed). Enfocada en arquitectura de microservicios, contenedores y comunicación entre servicios, con Docker Compose y PostgreSQL.",
+        "cover": "MicroservicesSocialApp.png",
+        "repo": "https://github.com/AJBababa/microservices-social-app",
+        "demo": null,
+        "stack": ["Node.js", "Docker", "PostgreSQL", "APIs REST"],
+        "languages": {
+            "JavaScript": 22300,
+            "TypeScript": 19631,
+            "CSS": 7346,
+            "HTML": 5612,
+            "Dockerfile": 1722
+        }
+    },
+    "podarsys": {
+        "name": "PODARSYS",
+        "tagline": "Sistema de gestión interno de Podarcis",
+        "description": "Aplicación de gestión de proyectos, ofertas y clientes que desarrollo en Podarcis desde abril de 2026, en equipo y sobre Laravel. Mi trabajo se ha centrado en cuatro módulos: auditorías ISO, control económico, planificación de proyectos y estudios técnicos con cartografía.",
+        "highlights": [
+            "Módulo de auditorías ISO: matriz de cláusulas por norma, no conformidades, observaciones y oportunidades de mejora, con buscador y generación de PDF.",
+            "Dashboard de control económico: KPIs de productividad, costes y riesgos, registro de horas y coste/hora por usuario.",
+            "Planificación de proyectos: diagrama de Gantt, timeline de fases con detección de atrasos, calendario laboral y export a Excel y PDF.",
+            "Estudios técnicos con mapas Leaflet: importación de shapefiles, ortofoto, clasificación ambiental (EIA) y Red Natura 2000.",
+            "Soporte multiidioma en requisitos y plantillas, con selector de idioma al generar los PDF.",
+            "Generación asistida de descripciones de proyecto mediante la API de OpenAI."
+        ],
+        "cover": "podarsys.png",
+        "repo": null,
+        "demo": null,
+        "private": true,
+        "stack": ["Laravel", "PHP", "Blade", "MySQL", "JavaScript", "Leaflet", "summernote", "OpenAI API", "Excel export", "PDF export", "shapefile import"],
+        "languages": {
+            "Blade": 3367355,
+            "PHP": 3224109,
+            "JavaScript": 149976,
+            "CSS": 22329
+        }
+    }
+}
