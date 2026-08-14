@@ -671,6 +671,14 @@ const runCommand = (rawCommand) => {
         return;
     }
 
+    // Hidden command, deliberately missing from `help`: renders the CV template
+    // through dompdf and opens it in a new tab, ready to download.
+    if (normalizedCommand === 'generatecv') {
+        appendResponse('Rendering cv/document.blade.php through dompdf...', 'muted');
+        window.open('/cv/generate', '_blank', 'noopener');
+        return;
+    }
+
     if (commands[normalizedCommand]) {
         appendResponse(commands[normalizedCommand]);
         return;
