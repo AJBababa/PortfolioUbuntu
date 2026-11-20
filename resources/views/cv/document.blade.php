@@ -1,6 +1,6 @@
 @php
     // En base64 porque dompdf no resuelve rutas locales de Windows.
-    $photo = 'data:image/jpeg;base64,'.base64_encode(file_get_contents(public_path('images/pfp.jpg')));
+    $photo = 'data:image/png;base64,'.base64_encode(file_get_contents(public_path('images/pfp.png')));
 @endphp
 <!DOCTYPE html>
 <html lang="es">
@@ -140,7 +140,7 @@
 
         /* FOTO */
 
-        /* Cuadrado: pfp.jpg es 640x640 y dompdf ignora object-fit. */
+        /* Redonda: pfp.png ya viene recortada en círculo con fondo transparente (dompdf ignora object-fit). */
         .photo-wrapper {
             position: relative;
             width: 34mm;
@@ -160,6 +160,7 @@
             top: 2mm;
             left: 2mm;
             background: #e95420;
+            border-radius: 16mm;
             z-index: 1;
         }
 
