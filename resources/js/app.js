@@ -10,6 +10,19 @@ const windowMargin = 12;
 
 const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
+// Keep-alive: Render (plan gratuito) apaga el servicio tras 15 min sin tráfico.
+// Mientras haya una pestaña abierta con la web, se hace un ping ligero cada 5 min.
+const keepAliveIntervalMs = 5 * 60 * 1000;
+const pingServer = () => {
+    fetch('/up', { cache: 'no-store' }).catch(() => {});
+};
+setInterval(pingServer, keepAliveIntervalMs);
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+        pingServer();
+    }
+});
+
 // Window focus manager: brings the clicked window to front and marks it active.
 const windowControllers = [];
 let topZIndex = 30;
